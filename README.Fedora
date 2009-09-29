@@ -1,0 +1,6 @@
+Because there is an conflict between openmotif-devel and 
+lesstif-devel, I have moved the libraries and header files
+package in openmotif-devel into the following places:
+
+header files: %{_includedir}/openmotif
+Libraries:    %{_libdir}/openmotif/lib
