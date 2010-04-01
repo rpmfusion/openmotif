@@ -1,15 +1,17 @@
+%global major 2.3
 Summary:	Open Motif runtime libraries and executables
 Name:		openmotif
-Version:	2.3.2
-Release:	5%{?dist}
+Version:	%{major}.3
+Release:	1%{?dist}
 License:	Open Group Public License
 Group:		System Environment/Libraries
-Source: 	ftp://ftp.ics.com/openmotif/2.3/2.3.2/%{name}-%{version}.tar.gz
+Source: 	ftp://ftp.ics.com/openmotif/%{major}/%{version}/%{name}-%{version}.tar.gz
 Source1:	xmbind
 Source2:	README.Fedora
 URL:		http://www.motifzone.net/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+Buildrequires:	automake autoconf texinfo
 BuildRequires:	flex
 BuildRequires:	byacc
 BuildRequires:	libjpeg-devel libpng-devel
@@ -19,8 +21,7 @@ BuildRequires:	perl
 
 Patch1:		openMotif-2.2.3-uil_lib.patch
 Patch2:		openMotif-2.3.0-rgbtxt.patch
-Patch3: 	openMotif-2.3.0-mwmrc_dir.patch
-Patch4: 	openMotif-2.3.0-no_X11R6.patch
+Patch3: 	openmotif-2.3.3-paths.patch
 
 # Conflicts:	lesstif
 
@@ -75,6 +76,7 @@ Summary:    Open Motif Additional Documentation
 Group:      Development/Libraries
 Conflicts:  lesstif-devel
 Requires:   openmotif-devel = %{version}-%{release}
+BuildArch:  noarch
 
 %description docs
 This is the Open Motif %{version} additional documentation
@@ -83,12 +85,14 @@ This is the Open Motif %{version} additional documentation
 %setup -q 
 %patch1 -p1 -b .uil_lib
 %patch2 -p1 -b .rgbtxt
-%patch3 -p1 -b .mwmrc_dir
-%patch4 -p1 -b .no_X11R6
+%patch3 -p1 -b .paths
 
 cp %{SOURCE2} .
 
 %build
+aclocal -I .
+automake --foreign
+autoconf
 %configure \
 	--enable-xft \
 	--enable-jpeg --enable-png
@@ -182,6 +186,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Wed Mar 31 2010 Jochen Schmitt <Jochen herr-schmitt de> 2.3.3-1
+- New upstream releasee
+- Make an unhappy RH employee happy
+
 * Wed Sep 16 2009 Jochen Schmitt <Jochen herr-schmitt de> 2.3.2-5
 - Remove req. to /usr/share/X11/XKeysymDB
 
@@ -197,5 +205,5 @@ rm -rf $RPM_BUILD_ROOT
 - Try to fix conflict with lesstif-devel
 
 * Wed Mar 25 2009 Jochen Schmitt <Jochen herr-schmitt de> 2.3.2-1
-- Initional Package for rpmfusion.org
+- Initional Package for rpmfusion.org (Based on the original RH release)
 
