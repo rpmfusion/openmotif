@@ -2,7 +2,7 @@
 Summary:	Open Motif runtime libraries and executables
 Name:		openmotif
 Version:	%{major}.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	Open Group Public License
 Group:		System Environment/Libraries
 Source: 	ftp://ftp.ics.com/openmotif/%{major}/%{version}/%{name}-%{version}.tar.gz
@@ -186,6 +186,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 2.3.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Wed Mar 31 2010 Jochen Schmitt <Jochen herr-schmitt de> 2.3.3-1
 - New upstream releasee
 - Make an unhappy RH employee happy
