@@ -2,7 +2,7 @@
 Summary:	Open Motif runtime libraries and executables
 Name:		openmotif
 Version:	%{major}.3
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	Open Group Public License
 Group:		System Environment/Libraries
 Source: 	ftp://ftp.ics.com/openmotif/%{major}/%{version}/%{name}-%{version}.tar.gz
@@ -18,6 +18,7 @@ BuildRequires:	libjpeg-devel libpng-devel
 BuildRequires:	libXft-devel libXmu-devel libXp-devel libXt-devel libXext-devel
 BuildRequires:	xorg-x11-xbitmaps
 BuildRequires:	perl
+BuildRequires:	flex-static
 
 Patch1:		openMotif-2.2.3-uil_lib.patch
 Patch2:		openMotif-2.3.0-rgbtxt.patch
@@ -186,6 +187,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Tue Jun  5 2012 Jochen Schmitt <Jochen herr-schmitt de> - 2.3.3-3
+- Add a BR to flex-static to fix a FTBFS
+
 * Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 2.3.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
