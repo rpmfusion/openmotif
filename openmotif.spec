@@ -1,15 +1,13 @@
-%global major 2.3
 Summary:	Open Motif runtime libraries and executables
 Name:		openmotif
-Version:	%{major}.3
-Release:	3%{?dist}
-License:	Open Group Public License
+Version:	2.3.4
+Release:	1%{?dist}
+License:	LGPLv2+
 Group:		System Environment/Libraries
-Source: 	ftp://ftp.ics.com/openmotif/%{major}/%{version}/%{name}-%{version}.tar.gz
+Source: 	http://prdownloads.sourceforge.net/motif/motif-%{version}-src.tgz
 Source1:	xmbind
 Source2:	README.Fedora
 URL:		http://www.motifzone.net/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Buildrequires:	automake autoconf texinfo
 BuildRequires:	flex
@@ -19,6 +17,7 @@ BuildRequires:	libXft-devel libXmu-devel libXp-devel libXt-devel libXext-devel
 BuildRequires:	xorg-x11-xbitmaps
 BuildRequires:	perl
 BuildRequires:	flex-static
+BuildRequires:  libtool
 
 Patch1:		openMotif-2.2.3-uil_lib.patch
 Patch2:		openMotif-2.3.0-rgbtxt.patch
@@ -77,13 +76,13 @@ Summary:    Open Motif Additional Documentation
 Group:      Development/Libraries
 Conflicts:  lesstif-devel
 Requires:   openmotif-devel = %{version}-%{release}
-BuildArch:  noarch
+# BuildArch:  noarch
 
 %description docs
 This is the Open Motif %{version} additional documentation
 
 %prep
-%setup -q 
+%setup -q -n motif-%{version} 
 %patch1 -p1 -b .uil_lib
 %patch2 -p1 -b .rgbtxt
 %patch3 -p1 -b .paths
@@ -91,9 +90,7 @@ This is the Open Motif %{version} additional documentation
 cp %{SOURCE2} .
 
 %build
-aclocal -I .
-automake --foreign
-autoconf
+./autogen.sh
 %configure \
 	--enable-xft \
 	--enable-jpeg --enable-png
@@ -105,8 +102,6 @@ make clean
 make # %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 export LD_LIBRARY_PATH=`pwd`/lib/Mrm/.libs:`pwd`/lib/Xm/.libs
 make DESTDIR=$RPM_BUILD_ROOT install
 
@@ -143,12 +138,9 @@ mv -f  $RPM_BUILD_ROOT%{_datadir}/Xm $RPM_BUILD_ROOT%{_libdir}/Xm
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(-,root,root,-)
-%doc COPYRIGHT.MOTIF README RELEASE RELNOTES
+%doc COPYING README RELEASE RELNOTES
 %{_includedir}/X11/bitmaps/*
 %dir %{_libdir}/openmotif
 %{_libdir}/openmotif/lib*.so.*
@@ -187,6 +179,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %changelog
+* Thu Oct 25 2012 Jochen Schmitt <Jochen herr-schmitt de> - 2.3.4-1
+- New upstream release
+- Package clean up
+- Licens changed to LGPL
+
 * Tue Jun  5 2012 Jochen Schmitt <Jochen herr-schmitt de> - 2.3.3-3
 - Add a BR to flex-static to fix a FTBFS
 
